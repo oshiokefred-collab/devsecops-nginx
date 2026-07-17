@@ -88,9 +88,12 @@ jobs:
           DOCKER_SCOUT_HUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Generate SBOM
-        run: |
-          docker scout sbom --format spdx \
-            ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }} > sbom.spdx.json
+        uses: docker/scout-action@v1
+        with:
+          command: sbom
+          image: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
+          format: spdx
+          output: sbom.spdx.json
 
       - uses: actions/upload-artifact@v4
         with:
